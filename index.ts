@@ -17,10 +17,11 @@ interface Object {
   forEach(callback: Function): void
 }
 interface Window {
+  Wait(time: number): any
   HTML(body: string): Element
   fetchJSON(url: [String, URL], opt: Object): any
   fetchTEXT(url: [String, URL], opt: Object): any
-  Wait(time: number): any
+  extender(param: any): any
 }
 
 Document.prototype.qs = function () {
@@ -32,11 +33,11 @@ Element.prototype.qs = function () {
 }
 
 Document.prototype.qsa = function () {
-  return [...this.querySelectorAll.apply(this, arguments)]
+  return Array.from(this.querySelectorAll.apply(this, arguments))
 }
 
 Element.prototype.qsa = function () {
-  return [...this.querySelectorAll.apply(this, arguments)]
+  return Array.from(this.querySelectorAll.apply(this, arguments))
 }
 
 Array.prototype.randomElement = function () {
@@ -75,4 +76,19 @@ window.Wait = function (duration) {
   return new Promise((resolve) => {
     setTimeout(resolve, duration)
   })
+}
+
+window.extender = function () {
+  const classes = Array.from(arguments)
+  class Bases {
+    constructor() {
+      classes.forEach((base) => Object.assign(this, new base()))
+    }
+  }
+  classes.forEach((base) => {
+    Object.getOwnPropertyNames(base.prototype)
+      .filter((prop) => prop !== "constructor")
+      .forEach((prop) => (Bases.prototype[prop] = base.prototype[prop]))
+  })
+  return Bases
 }

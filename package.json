@@ -1,13 +1,8 @@
 {
   "scripts": {
     "start": "tsc --watch",
-    "build": "npm run node & npm run tsc & npm run minify",
-    "node":"node ./server.js",
-    "tsc": "tsc --sourceMap false",
+    "build": "npm run tsc & npm run minify",
+    "tsc": "tsc",
     "minify": "minify ./index.js --out-file ./index.js"
-  },
-  "devDependencies": {
-    "babel-minify": "latest",
-    "typescript": "latest"
   }
 }
